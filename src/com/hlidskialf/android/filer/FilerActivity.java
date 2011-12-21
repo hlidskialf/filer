@@ -46,7 +46,7 @@ public class FilerActivity extends ListActivity
 
   private File mRootFile,mCurDir,mStartFile;
   private boolean mBrowseRoot,mHideDot,mRecursiveDelete,mBackExits;
-  private boolean mCreatingShortcut; 
+  private boolean mCreatingShortcut;
   private String mRootPath,mHomePath;
   private ArrayList<String> mCurFiles;
   private FileListAdapter mFileAdapter;
@@ -86,15 +86,15 @@ public class FilerActivity extends ListActivity
   };
   private class FileListAdapter extends ArrayAdapter {
     private Context mContext ;
-    public FileListAdapter(Context context) 
+    public FileListAdapter(Context context)
     {
-      super(context, R.layout.file_list_item, mCurFiles); 
+      super(context, R.layout.file_list_item, mCurFiles);
       mContext = context;
     }
-    public View getView(int pos, View v, ViewGroup parent) 
+    public View getView(int pos, View v, ViewGroup parent)
     {
       if (v == null) {
-        v = mFactory.inflate(R.layout.file_list_item, parent, false); 
+        v = mFactory.inflate(R.layout.file_list_item, parent, false);
       }
       if (pos >= mCurFiles.size()) return v; // Only monkey seems to trigger this
 
@@ -102,9 +102,9 @@ public class FilerActivity extends ListActivity
       final String filename = mCurFiles.get(pos);
       File f = new File(mCurDir, filename);
 
-      if (mYanked.contains(f.getAbsolutePath())) 
+      if (mYanked.contains(f.getAbsolutePath()))
         v.setBackgroundResource(R.drawable.yanked);
-      else 
+      else
         v.setBackgroundResource(R.drawable.unyanked);
 
       TextView name = (TextView)v.findViewById(R.id.row_name);
@@ -163,8 +163,8 @@ public class FilerActivity extends ListActivity
     mHideDot = mPrefs.getBoolean(Filer.PREF_HIDE_DOT, true);
     mHomePath = mPrefs.getString(Filer.PREF_HOME_PATH, "");
     mBackExits = mPrefs.getBoolean(Filer.PREF_BACK_EXITS, false);
-    
-    if (mHomePath == null || mHomePath.length() < 1) 
+
+    if (mHomePath == null || mHomePath.length() < 1)
       mHomePath = Environment.getExternalStorageDirectory().toString();
 
     mRecursiveDelete = mPrefs.getBoolean(Filer.PREF_RECURSIVE_DELETE, true);
@@ -183,16 +183,16 @@ public class FilerActivity extends ListActivity
     /* determine starting directory */
     Uri uri = trigger.getData();
     mStartFile = new File(uri != null ? uri.getPath() : mHomePath);
-    if (!mStartFile.isDirectory()) 
+    if (!mStartFile.isDirectory())
       mStartFile = mStartFile.getParentFile();
     mCurDir = mStartFile;
 
     mMountFilter = new IntentFilter();
-    mMountFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED); 
-    mMountFilter.addAction(Intent.ACTION_MEDIA_MOUNTED); 
+    mMountFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+    mMountFilter.addAction(Intent.ACTION_MEDIA_MOUNTED);
     mMountFilter.addDataScheme("file");
 
-    
+
     mPathHistory = new Stack<String>();
     mYanked = new ArrayList<String>();
     mCurFiles = new ArrayList<String>();
@@ -235,7 +235,7 @@ public class FilerActivity extends ListActivity
     if (mCurDir != null)
       icicle.putString("mCurDir", mCurDir.getPath());
   }
-  @Override 
+  @Override
   public void onRestoreInstanceState(Bundle icicle)
   {
     super.onRestoreInstanceState(icicle);
@@ -244,7 +244,7 @@ public class FilerActivity extends ListActivity
     if (cur_dir != null) fillData(new File(cur_dir));
   }
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+  protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     if (requestCode == REQUEST_PREFERENCES) {
       load_preferences();
@@ -294,7 +294,7 @@ public class FilerActivity extends ListActivity
 
     open_file(Filer.getIntentFromFile(this, f));
   }
-  @Override 
+  @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
   {
     AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
@@ -315,7 +315,7 @@ public class FilerActivity extends ListActivity
 
     MenuItem yank = menu.findItem(R.id.context_menu_yank);
     MenuItem unyank = menu.findItem(R.id.context_menu_unyank);
-    
+
     if (yank != null && unyank != null) {
       File f = new File(mCurDir, filename);
       boolean vis = mYanked.contains(f.getPath());
@@ -323,12 +323,12 @@ public class FilerActivity extends ListActivity
       yank.setVisible(!vis);
     }
   }
-  @Override 
+  @Override
   public boolean onContextItemSelected(MenuItem item)
   {
     AdapterContextMenuInfo info = (AdapterContextMenuInfo)item.getMenuInfo();
     final String filename = mCurFiles.get(info.position);
-    final File f = new File(mCurDir, filename); 
+    final File f = new File(mCurDir, filename);
 
     switch (item.getItemId()) {
       case R.id.context_menu_open:
@@ -372,9 +372,9 @@ public class FilerActivity extends ListActivity
         return true;
       case R.id.context_menu_delete:
         final String path = f.getAbsolutePath();
-        build_yank_buffer_dialog(R.string.dialog_delete_buffer_title, path) 
+        build_yank_buffer_dialog(R.string.dialog_delete_buffer_title, path)
           .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) { 
+            public void onClick(DialogInterface dialog, int which) {
               final DialogInterface dia = dialog;
               AlertLog log = new AlertLog(FilerActivity.this, R.string.deleting_files);
               log.setDoneListener(new AlertLog.DoneListener() {
@@ -382,7 +382,7 @@ public class FilerActivity extends ListActivity
                   fillData(mCurDir);
                 }
               });
-              
+
               FileSystem.delete(FilerActivity.this, log, new String[] {path}, mRecursiveDelete);
             }
           })
@@ -470,7 +470,7 @@ public class FilerActivity extends ListActivity
             Toast t = Toast.makeText(FilerActivity.this, msg, Toast.LENGTH_LONG);
             t.show();
           }
-          public void onCancel() {} 
+          public void onCancel() {}
         });
         return true;
       case R.id.options_menu_prefs:
@@ -521,7 +521,7 @@ public class FilerActivity extends ListActivity
 
     TextView tv = (TextView)findViewById(R.id.empty_text);
     if (tv != null) tv.setVisibility(View.GONE);
-    
+
     getListView().invalidateViews();
   }
   public void emptyData(int reason_res_id)
@@ -567,7 +567,7 @@ public class FilerActivity extends ListActivity
   {
     String[] ls = mCurDir.list();
     int i;
-    for (i=0; i < ls.length; i++) 
+    for (i=0; i < ls.length; i++)
       yank_file(ls[i]);
     fillData(mCurDir);
     update_yankbar_visibility();
@@ -633,19 +633,19 @@ public class FilerActivity extends ListActivity
     return builder;
   }
 
-  private void init_yankbar() 
+  private void init_yankbar()
   {
     View buffer = findViewById(R.id.yank_bar_buffer);
     buffer.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) { 
+      public void onClick(View v) {
         build_yank_buffer_dialog(R.string.dialog_yank_buffer_title, null)
           .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) { dialog.dismiss(); }
           })
           .setNeutralButton(R.string.unyank_all, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) { 
+            public void onClick(DialogInterface dialog, int which) {
               dialog.dismiss();
-              unyank_all(); 
+              unyank_all();
             }
           })
           .show();
@@ -653,10 +653,10 @@ public class FilerActivity extends ListActivity
     });
     View copy = findViewById(R.id.yank_bar_copy);
     copy.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) { 
-        build_yank_buffer_dialog(R.string.dialog_copy_buffer_title, null) 
+      public void onClick(View v) {
+        build_yank_buffer_dialog(R.string.dialog_copy_buffer_title, null)
           .setPositiveButton(R.string.copy_here, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) { 
+            public void onClick(DialogInterface dialog, int which) {
               final DialogInterface dia = dialog;
               AlertLog log = new AlertLog(FilerActivity.this, R.string.copying_files);
               log.setDoneListener(new AlertLog.DoneListener() {
@@ -673,10 +673,10 @@ public class FilerActivity extends ListActivity
     });
     View move = findViewById(R.id.yank_bar_move);
     move.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) { 
-        build_yank_buffer_dialog(R.string.dialog_move_buffer_title, null) 
+      public void onClick(View v) {
+        build_yank_buffer_dialog(R.string.dialog_move_buffer_title, null)
           .setPositiveButton(R.string.move_here, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) { 
+            public void onClick(DialogInterface dialog, int which) {
               final DialogInterface dia = dialog;
               AlertLog log = new AlertLog(FilerActivity.this, R.string.moving_files);
               log.setDoneListener(new AlertLog.DoneListener() {
@@ -693,10 +693,10 @@ public class FilerActivity extends ListActivity
     });
     View rm = findViewById(R.id.yank_bar_delete);
     rm.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) { 
-        build_yank_buffer_dialog(R.string.dialog_delete_buffer_title, null) 
+      public void onClick(View v) {
+        build_yank_buffer_dialog(R.string.dialog_delete_buffer_title, null)
           .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) { 
+            public void onClick(DialogInterface dialog, int which) {
               final DialogInterface dia = dialog;
               AlertLog log = new AlertLog(FilerActivity.this, R.string.deleting_files);
               log.setDoneListener(new AlertLog.DoneListener() {
@@ -728,10 +728,10 @@ public class FilerActivity extends ListActivity
     });
   }
 
-  private void open_as(File f) 
+  private void open_as(File f)
   {
     final Intent intent = Filer.getIntentFromFile(this, f);
-    
+
     View layout = mFactory.inflate(R.layout.open_as, null);
     TextView tv;
     tv = (TextView)layout.findViewById(R.id.file_info_path);
@@ -753,7 +753,7 @@ public class FilerActivity extends ListActivity
       .setTitle(R.string.open_as)
       .setView(layout)
       .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dia, int which) { 
+        public void onClick(DialogInterface dia, int which) {
           String action = (String)spinner.getSelectedItem();
           String type = mimetype.getText().toString();
           intent.setDataAndType(intent.getData(), type);

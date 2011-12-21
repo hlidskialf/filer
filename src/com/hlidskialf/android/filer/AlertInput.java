@@ -35,7 +35,7 @@ public class AlertInput {
       .setTitle(title_res)
       .setView(layout)
       .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) { 
+        public void onClick(DialogInterface dialog, int which) {
           if (mListener != null) {
             mListener.onComplete(mText.getText().toString());
           }
@@ -43,11 +43,11 @@ public class AlertInput {
         }
       })
       .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) { 
+        public void onClick(DialogInterface dialog, int which) {
           if (mListener != null) {
             mListener.onCancel();
           }
-          dialog.dismiss(); 
+          dialog.dismiss();
         }
       })
       .show();

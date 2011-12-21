@@ -47,9 +47,9 @@ public class AlertLog extends Handler {
       .setView(v)
       .setCancelable(false)
       .setOnCancelListener(new DialogInterface.OnCancelListener() {
-        public void onCancel(DialogInterface dia) { 
+        public void onCancel(DialogInterface dia) {
           mCanceled = true;
-          AlertLog.this.dismiss(); 
+          AlertLog.this.dismiss();
         }
       })
       .show();
@@ -59,7 +59,7 @@ public class AlertLog extends Handler {
     mProgress = new ProgressDialog(context);
     mProgress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     mProgress.setOnCancelListener(new DialogInterface.OnCancelListener() {
-      public void onCancel(DialogInterface dia) { 
+      public void onCancel(DialogInterface dia) {
         android.util.Log.v("progress","cancel");
         if (mCancelListener != null)
           mCancelListener.cancel();
@@ -72,25 +72,25 @@ public class AlertLog extends Handler {
   public boolean isCancelled() { return mCanceled; }
 
   public void appendln(String text) { append(text+"\n"); }
-  public void append(String text) { 
+  public void append(String text) {
     if (mText == null) return;
     Message msg = Message.obtain();
     msg.obj = text;
     msg.what = MSG_APPEND;
     sendMessage(msg);
   }
-  public void waitForIt() { 
+  public void waitForIt() {
     Message msg = Message.obtain();
     msg.what = MSG_WAITFORIT;
     sendMessage(msg);
   }
-  public void dismiss() { 
+  public void dismiss() {
     Message msg = Message.obtain();
     msg.what = MSG_DISMISS;
     sendMessage(msg);
   }
 
-  public void progress_start(String title, String message, int max) { 
+  public void progress_start(String title, String message, int max) {
     Message msg = Message.obtain();
     msg.what = MSG_PROGRESS_START;
     Bundle b = new Bundle();
@@ -100,13 +100,13 @@ public class AlertLog extends Handler {
     msg.obj = b;
     sendMessage(msg);
   }
-  public void progress_update(int progress) { 
+  public void progress_update(int progress) {
     Message msg = Message.obtain();
     msg.what = MSG_PROGRESS_UPDATE;
     msg.obj = new Integer(progress);
     sendMessage(msg);
   }
-  public void progress_finish() { 
+  public void progress_finish() {
     Message msg = Message.obtain();
     msg.what = MSG_PROGRESS_FINISH;
     sendMessage(msg);
@@ -117,7 +117,7 @@ public class AlertLog extends Handler {
   public void handleMessage(Message msg) {
     switch (msg.what) {
       case MSG_DISMISS:
-        mDialog.dismiss(); 
+        mDialog.dismiss();
         if (mDoneListener != null) mDoneListener.done();
         break;
       case MSG_APPEND:

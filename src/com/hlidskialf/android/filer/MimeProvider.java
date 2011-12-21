@@ -48,7 +48,7 @@ public class MimeProvider extends ContentProvider {
       //image/*.png,image/*.gif,image/*.jpg,image/*.bmp,
        //      video/*.mpg,video/*.wmv,video/*.mov,video/*.avi,audio/*.wav,audio/*.mp3,audio/*.wma,audio/*.ogg
 
-      String query = "INSERT INTO "+ Filer.MimeColumns.TABLE_NAME + 
+      String query = "INSERT INTO "+ Filer.MimeColumns.TABLE_NAME +
                        "(extension, mimetype, icon, action) VALUES ";
       db.execSQL(query+"('.html','text/html', 'drawable://"+Filer.PACKAGE_NAME+"/mimetype_html',       'android.intent.action.VIEW');");
       db.execSQL(query+"('.htm', 'text/html', 'drawable://"+Filer.PACKAGE_NAME+"/mimetype_html',       'android.intent.action.VIEW');");
@@ -87,7 +87,7 @@ public class MimeProvider extends ContentProvider {
   }
 
   @Override
-  public String getType(Uri uri)  { 
+  public String getType(Uri uri)  {
     switch(sUriMatcher.match(uri)) {
       case URI_MATCH_MIMETYPE:
         return "vnd.android.cursor.dir/"+Filer.MimeColumns.TABLE_NAME;
@@ -99,7 +99,7 @@ public class MimeProvider extends ContentProvider {
   }
 
   @Override
-  public Uri insert(Uri uri, ContentValues values) { 
+  public Uri insert(Uri uri, ContentValues values) {
     if (sUriMatcher.match(uri) != URI_MATCH_MIMETYPE) {
       throw new IllegalArgumentException("Cannot insert into URI: " + uri);
     }
@@ -122,7 +122,7 @@ public class MimeProvider extends ContentProvider {
   }
 
   @Override
-  public int update(Uri uri, ContentValues values, String where, String[] where_args) { 
+  public int update(Uri uri, ContentValues values, String where, String[] where_args) {
     if (sUriMatcher.match(uri) != URI_MATCH_MIMETYPE_ID)
       throw new UnsupportedOperationException("Cannot update URI: " + uri);
 
@@ -137,7 +137,7 @@ public class MimeProvider extends ContentProvider {
   }
 
   @Override
-  public int delete(Uri uri, String where, String[] where_args) { 
+  public int delete(Uri uri, String where, String[] where_args) {
     SQLiteDatabase db = mOpenHelper.getWritableDatabase();
     int count;
     switch (sUriMatcher.match(uri)) {
@@ -162,7 +162,7 @@ public class MimeProvider extends ContentProvider {
   }
 
   @Override
-  public Cursor query(Uri uri, String[] projection, String selection, String[] selection_args, String sort) { 
+  public Cursor query(Uri uri, String[] projection, String selection, String[] selection_args, String sort) {
     SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
     switch(sUriMatcher.match(uri)) {
@@ -182,7 +182,7 @@ public class MimeProvider extends ContentProvider {
 
     if (ret != null)
       ret.setNotificationUri(getContext().getContentResolver(), uri);
-    
+
     return ret;
   }
 

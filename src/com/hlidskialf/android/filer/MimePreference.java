@@ -72,7 +72,7 @@ public class MimePreference extends DialogPreference
   }
 
   @Override
-  protected void onBindDialogView(View v) 
+  protected void onBindDialogView(View v)
   {
     mListView = (ListView)v.findViewById(android.R.id.list);
 
@@ -91,7 +91,7 @@ public class MimePreference extends DialogPreference
     tv.setText(Filer.MimeColumns.ACTION);
 
     View b = (View)v.findViewById(R.id.button_newmime);
-    b.setOnClickListener(new View.OnClickListener() { 
+    b.setOnClickListener(new View.OnClickListener() {
       public void onClick(View v) {
         mEditDialog = new EditMimeDialog(mContext, R.string.new_mime, 0);
       }
@@ -107,8 +107,8 @@ public class MimePreference extends DialogPreference
     }
   }
 
-  @Override 
-  protected void onDialogClosed(boolean positiveResult) 
+  @Override
+  protected void onDialogClosed(boolean positiveResult)
   {
     super.onDialogClosed(positiveResult);
 

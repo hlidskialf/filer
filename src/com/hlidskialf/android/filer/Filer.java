@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import android.media.MediaScannerConnection;
 
 
-public class Filer 
+public class Filer
 {
   public static final String PACKAGE_NAME="com.hlidskialf.android.filer";
 
@@ -83,7 +83,7 @@ public class Filer
   public interface MimetypeReporter {
     public void reportMime(int id, String ext, String mimetype, String icon, String action);
   }
-  public synchronized static void getMimetypes(MimetypeReporter reporter, Cursor cur) 
+  public synchronized static void getMimetypes(MimetypeReporter reporter, Cursor cur)
   {
     if (!cur.moveToFirst()) return;
     do {
@@ -98,7 +98,7 @@ public class Filer
   public synchronized static void getMimetype(Context context, int mime_id, MimetypeReporter reporter)
   {
     Cursor cursor = context.getContentResolver().query(
-        ContentUris.withAppendedId(MimeColumns.CONTENT_URI, mime_id), 
+        ContentUris.withAppendedId(MimeColumns.CONTENT_URI, mime_id),
         MimeColumns.MIME_QUERY_COLUMNS, null, null, MimeColumns.DEFAULT_SORT_ORDER);
     Filer.getMimetypes(reporter, cursor);
     cursor.close();
@@ -107,8 +107,8 @@ public class Filer
   public synchronized static String getIconFromExtension(Context context, String extension)
   {
     if (extension == null) return null;
-    Cursor cursor = context.getContentResolver().query(MimeColumns.CONTENT_URI, 
-        new String[] { MimeColumns.ICON }, 
+    Cursor cursor = context.getContentResolver().query(MimeColumns.CONTENT_URI,
+        new String[] { MimeColumns.ICON },
         MimeColumns.EXTENSION+"=?", new String[] {extension},
         null);
     String ret = null;
@@ -125,8 +125,8 @@ public class Filer
     String extension = Filer.getExtension(file.getName());
     if (extension == null) return ret;
 
-    Cursor cursor = context.getContentResolver().query(MimeColumns.CONTENT_URI, 
-        new String[] { MimeColumns.MIMETYPE, MimeColumns.ACTION }, 
+    Cursor cursor = context.getContentResolver().query(MimeColumns.CONTENT_URI,
+        new String[] { MimeColumns.MIMETYPE, MimeColumns.ACTION },
         MimeColumns.EXTENSION+"=?", new String[] {extension},
         null);
 
@@ -150,8 +150,8 @@ public class Filer
     else {
       String extension = Filer.getExtension(file.getName());
       if (extension != null) {
-        Cursor cursor = context.getContentResolver().query(MimeColumns.CONTENT_URI, 
-            new String[] { MimeColumns.MIMETYPE, MimeColumns.ACTION }, 
+        Cursor cursor = context.getContentResolver().query(MimeColumns.CONTENT_URI,
+            new String[] { MimeColumns.MIMETYPE, MimeColumns.ACTION },
             MimeColumns.EXTENSION+"=?", new String[] {extension},
             null);
         if (cursor.moveToFirst()) {
@@ -181,7 +181,7 @@ public class Filer
     return resolver.insert(MimeColumns.CONTENT_URI, values);
   }
 
-  public synchronized static void updateMimetype(Context context, int id, String extension, String mimetype, String icon, String action) 
+  public synchronized static void updateMimetype(Context context, int id, String extension, String mimetype, String icon, String action)
   {
     ContentValues values = new ContentValues(5);
     ContentResolver resolver = context.getContentResolver();
@@ -273,7 +273,7 @@ public class Filer
     private ContentResolver mResolver;
     private MediaScannerConnection mScanner;
 
-    public MediaProviderBatch(Context context) 
+    public MediaProviderBatch(Context context)
     {
       mContext = context;
       mResolver = context.getContentResolver();
@@ -283,8 +283,8 @@ public class Filer
 
     public void remove(File f) { recurse_file(mRem, f); }
     public void add(File f) { recurse_file(mAdd, f); }
-    
-    private void recurse_file(List list, File f) 
+
+    private void recurse_file(List list, File f)
     {
       if (f.isDirectory()) {
         String[] ls = f.list();
@@ -294,22 +294,22 @@ public class Filer
         }
       } else {
         String path = f.getAbsolutePath().toLowerCase();
-        if (path.endsWith(".jpg") || 
+        if (path.endsWith(".jpg") ||
             path.endsWith(".bmp") ||
-            path.endsWith(".png") || 
-            path.endsWith(".gif") || 
-            path.endsWith(".tif") || 
-            path.endsWith(".jpeg") || 
+            path.endsWith(".png") ||
+            path.endsWith(".gif") ||
+            path.endsWith(".tif") ||
+            path.endsWith(".jpeg") ||
             path.endsWith(".tiff")
            )
           list.add(path);
       }
     }
-    
+
     private Uri get_image_uri(String path)
     {
-      Cursor c = mResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-        new String[] {BaseColumns._ID}, 
+      Cursor c = mResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        new String[] {BaseColumns._ID},
         MediaStore.MediaColumns.DATA+"=?",new String[] {path},null);
       if (!c.moveToFirst()) return null;
       return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(c.getInt(0)));
@@ -324,10 +324,10 @@ public class Filer
         if (u != null)
           mResolver.delete(u, null,null);
       }
-    
+
       MediaScannerHelper helper = new MediaScannerHelper(mContext, mAdd);
       helper.scan();
-      
+
     }
 
     private static class MediaScannerHelper implements MediaScannerConnection.MediaScannerConnectionClient
@@ -345,7 +345,7 @@ public class Filer
       }
       public void onMediaScannerConnected() {
         if (mSize < 1) {
-          mScanner.disconnect(); 
+          mScanner.disconnect();
           return;
         }
         mScanner.scanFile(mList.get(0), null);
@@ -361,5 +361,5 @@ public class Filer
       public void scan() { mScanner.connect(); }
     }
   }
-  
+
 }

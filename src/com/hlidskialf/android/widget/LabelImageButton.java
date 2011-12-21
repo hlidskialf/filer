@@ -13,7 +13,7 @@ public class LabelImageButton extends LinearLayout
 
   public LabelImageButton(Context context, AttributeSet attrs)
   {
-    super(context,attrs); 
+    super(context,attrs);
 
     mImage = new ImageView(context,attrs);
     mImage.setPadding(0,0,0,0);
