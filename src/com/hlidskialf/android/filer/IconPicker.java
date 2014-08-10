@@ -52,7 +52,7 @@ public class IconPicker extends Dialog
 
 
   public IconPicker(Context ctx, String title) {
-    super(ctx); 
+    super(ctx);
     mContext = ctx;
     mResources = mContext.getResources();
     mGrid = new GridView(ctx);

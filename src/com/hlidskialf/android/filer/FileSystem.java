@@ -23,11 +23,11 @@ public class FileSystem
   public static void copy(Context _context, AlertLog _log, String[] _src, File _dest)
   {
     final Context context = _context;
-    final AlertLog log = _log; 
+    final AlertLog log = _log;
     final String[] src = _src;
     final File dest = _dest;
 
-    if (!(dest.exists() && dest.isDirectory())) 
+    if (!(dest.exists() && dest.isDirectory()))
       return;
 
     class CopyThread extends Thread {
@@ -44,7 +44,7 @@ public class FileSystem
           File fnew = new File(dest, fsrc.getName());
           if (fnew.exists()) {
             log.appendln(context.getString(R.string.file_exists, fnew.getAbsolutePath()));
-            continue; 
+            continue;
           }
           try {
             file_deepcopy(context, log, fsrc, fnew);
@@ -65,8 +65,8 @@ public class FileSystem
     });
     thread.start();
   }
-  private static void file_deepcopy(Context context, AlertLog log, File src, File dest) 
-    throws java.io.IOException 
+  private static void file_deepcopy(Context context, AlertLog log, File src, File dest)
+    throws java.io.IOException
   {
     if (src.isDirectory()) {
       if (!dest.exists())
@@ -81,8 +81,8 @@ public class FileSystem
       file_copy(context, log, src, dest);
     }
   }
-  private static void file_copy(Context context, AlertLog log, File src, File dest) 
-    throws java.io.IOException 
+  private static void file_copy(Context context, AlertLog log, File src, File dest)
+    throws java.io.IOException
   {
     FileInputStream in = new FileInputStream(src);
     FileOutputStream out = new FileOutputStream(dest);
@@ -109,11 +109,11 @@ public class FileSystem
   public static void move(Context _context, AlertLog _log, String[] _src, File _dest)
   {
     final Context context = _context;
-    final AlertLog log = _log; 
+    final AlertLog log = _log;
     final String[] src = _src;
     final File dest = _dest;
 
-    if (!(dest.exists() && dest.isDirectory())) 
+    if (!(dest.exists() && dest.isDirectory()))
       return;
 
     Thread thread = new Thread() {
@@ -129,7 +129,7 @@ public class FileSystem
           File fnew = new File(dest, fsrc.getName());
           if (fnew.exists()) {
             log.appendln(context.getString(R.string.file_exists, fnew.getAbsolutePath()));
-            continue; 
+            continue;
           }
           log.appendln(fsrc.getAbsolutePath() + " -> " + fnew.getAbsolutePath());
           batch.remove(fsrc);
@@ -147,7 +147,7 @@ public class FileSystem
   public static void delete(Context _context, AlertLog _log, String[] _src, boolean _recursive)
   {
     final Context context = _context;
-    final AlertLog log = _log; 
+    final AlertLog log = _log;
     final String[] src = _src;
     final boolean recursive = _recursive;
 
@@ -165,7 +165,7 @@ public class FileSystem
             file_deepdelete(context, log, fsrc);
             batch.remove(fsrc);
           } else {
-            if (fsrc.isDirectory() && fsrc.list().length > 0) 
+            if (fsrc.isDirectory() && fsrc.list().length > 0)
               log.appendln(context.getString(R.string.directory_not_empty, fsrc.getAbsolutePath()));
             else {
               file_delete(context, log, fsrc);
@@ -187,7 +187,7 @@ public class FileSystem
       for (i = 0; i < ls.length; i++) {
         file_deepdelete(context, log, new File(src, ls[i]));
       }
-    } 
+    }
     file_delete(context, log, src);
   }
   private static void file_delete(Context context, AlertLog log, File src)

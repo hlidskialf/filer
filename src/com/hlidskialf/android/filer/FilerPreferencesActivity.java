@@ -16,5 +16,5 @@ public class FilerPreferencesActivity extends PreferenceActivity {
 
     addPreferencesFromResource(R.xml.preferences);
   }
-  
+
 }
